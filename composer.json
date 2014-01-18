@@ -1,0 +1,34 @@
+{
+    "name": "hieblmedia/simple-php-encrypter-decrypter",
+    "description": "Simple Encrypt/Decrypt PHP Class",
+    "keywords": ["php", "encryption", "encrypt", "decrypt", "encode", "decode"],
+    "homepage": "https://github.com/hieblmedia/simple-php-encrypter-decrypter",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Reinhard Hiebl",
+            "homepage": "http://www.hieblmedia.de/"
+        }
+    ],
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "require": {
+        "php": ">=5.3.0",
+        "ext-mcrypt": "*"
+    },
+    "require-dev": {
+        "phpunit/phpunit" : "*"
+    },
+    "suggest": {
+        "ext-mcrypt": "*"
+    },
+    "config": {
+        "bin-dir": "bin"
+    },
+    "autoload": {
+        "psr-0": {
+            "Encryption": "src/"
+        }
+    }
+}

@@ -1,4 +1,4 @@
-# Simple PHP Encrypter/Decrypter #
+# Simple PHP Encrypter/Decrypter [![Build Status](https://travis-ci.org/hieblmedia/simple-php-encrypter-decrypter.png?branch=master)](https://travis-ci.org/hieblmedia/simple-php-encrypter-decrypter) #
 
 Encrypter is a simple class to encode/decode data with an secure key.
 

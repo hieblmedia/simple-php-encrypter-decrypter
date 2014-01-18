@@ -6,9 +6,10 @@ php:
     - 5.5
 
 before_script:
-    - pear install pear/PHP_CodeSniffer
     - composer self-update
     - composer install --dev
+    - pyrus install pear/PHP_CodeSniffer
+    - phpenv rehash
 
 script:
     - ./bin/phpunit -v

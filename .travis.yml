@@ -13,4 +13,4 @@ before_script:
 
 script:
     - ./bin/phpunit -v
-    - phpcs .\src\Encryption\Encrypter.php --standard=PSR2 --report=summary -np
+    - phpcs ./src/Encryption/Encrypter.php --standard=PSR2 --report=summary -np

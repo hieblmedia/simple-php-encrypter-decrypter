@@ -6,7 +6,10 @@ php:
     - 5.5
 
 before_script:
+    - pear install pear/PHP_CodeSniffer
     - composer self-update
     - composer install --dev
 
-script: ./bin/phpunit -v
+script:
+    - ./bin/phpunit -v
+    - phpcs .\src\Encryption\Encrypter.php --standard=PSR2 --report=summary -np

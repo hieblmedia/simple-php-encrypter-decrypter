@@ -30,10 +30,15 @@ class Encrypter
      * Possible to change key on fly to jump over multiple encoding/decoding
      *
      * @param $secureKey
+     * @throws \InvalidArgumentException
      */
     public function setSecureKey($secureKey)
     {
-        $this->secureKey = $secureKey;
+        if (!empty($secureKey)) {
+            $this->createSecureKey($secureKey);
+        } else {
+            throw new \InvalidArgumentException('$secureKey can not be empty');
+        }
     }
 
     /**

@@ -36,7 +36,8 @@ class FixedSecureKeyTest extends \PHPUnit_Framework_TestCase
     public function testEqualSecondEncrypterFixed()
     {
         $encrypter = new Encrypter($this->secureKey);
-        $encrypter2 = new Encrypter($this->secureKey);
+        $encrypter2 = new Encrypter; // Create random
+        $encrypter2->setSecureKey($this->secureKey); // Then change to fixed secure key
 
         $originalValue = $this->generateRandomString();
         $encodedValue1 = $encrypter->encode($originalValue);

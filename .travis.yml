@@ -8,9 +8,9 @@ php:
 before_script:
     - composer self-update
     - composer install --dev
-    - pyrus install pear/PHP_CodeSniffer
+    #- pyrus install pear/PHP_CodeSniffer
     - phpenv rehash
 
 script:
     - ./bin/phpunit -v
-    - phpcs ./src/HieblMedia/Encryption/Encrypter.php --standard=PSR2 --report=summary -np
+    # - phpcs ./src/HieblMedia/Encryption/Encrypter.php --standard=PSR2 --report=summary -np

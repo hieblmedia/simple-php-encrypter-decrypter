@@ -8,9 +8,9 @@
  * @link        https://github.com/hieblmedia/simple-php-encrypter-decrypter
  */
 
-namespace Encryption\Test;
+namespace HieblMedia\Encryption\Test;
 
-use Encryption\Encrypter;
+use HieblMedia\Encryption\Encrypter;
 
 /**
  * Class RandomSecureKeyTest

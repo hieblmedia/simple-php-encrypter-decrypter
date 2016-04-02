@@ -14,7 +14,7 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
-        "php": ">=5.3.0",
+        "php": ">=5.5.0",
         "ext-mcrypt": "*"
     },
     "require-dev": {
@@ -27,8 +27,8 @@
         "bin-dir": "bin"
     },
     "autoload": {
-        "psr-0": {
-            "Encryption": "src/"
+        "psr-4": {
+            "HieblMedia\\Encryption\\": "src/HieblMedia/Encryption/"
         }
     }
 }

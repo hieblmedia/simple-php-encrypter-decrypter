@@ -8,7 +8,7 @@
  * @link        https://github.com/hieblmedia/simple-php-encrypter-decrypter
  */
 
-namespace Encryption;
+namespace HieblMedia\Encryption;
 
 /**
  * Class Encrypter
@@ -51,7 +51,7 @@ class Encrypter
         if (!$secureKey) {
             $secureKey = (microtime(true) . mt_rand(10000, 90000));
         }
-        $secureKey = sha1($secureKey);
+        $secureKey = md5($secureKey);
 
         $this->secureKey = pack('H*', $secureKey);
     }

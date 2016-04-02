@@ -35,7 +35,7 @@ require 'vendor/autoload.php';
 $value = 'My String';
 
 // Get encrypter with random secure key
-$encrypter = new \Encryption\Encrypter;
+$encrypter = new \HieblMedia\Encryption\Encrypter;
 
 $encodedValue = $encrypter->encode($value);
 echo "Encoded value: $encodedValue\n"; // Encrypted value
@@ -48,7 +48,7 @@ echo "Decoded value: $decodedValue\n"; // My String
 ``` php
 <?php
 
-$encrypter = new \Encryption\Encrypter('yourFixedSecureKey');
+$encrypter = new \HieblMedia\Encryption\Encrypter('yourFixedSecureKey');
 
 // ...
 ```

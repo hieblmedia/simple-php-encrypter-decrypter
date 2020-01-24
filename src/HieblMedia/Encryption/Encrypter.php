@@ -3,12 +3,14 @@
  * simple-php-encrypter-decrypter
  *
  * @author      Reinhard Hiebl <reinhard@hieblmedia.com>
- * @copyright   Copyright (C) 2013, HieblMedia (Reinhard Hiebl)
+ * @copyright   Copyright (C) 2020, HieblMedia (Reinhard Hiebl)
  * @license     MIT
  * @link        https://github.com/hieblmedia/simple-php-encrypter-decrypter
  */
 
 namespace HieblMedia\Encryption;
+
+use InvalidArgumentException;
 
 /**
  * Class Encrypter
@@ -17,6 +19,7 @@ namespace HieblMedia\Encryption;
 class Encrypter
 {
     private $secureKey;
+    protected $method = 'AES-256-CBC';
 
     /**
      * @param string|null $secureKey Optional, if empty a random unique key will be generated
@@ -30,14 +33,34 @@ class Encrypter
      * Possible to change key on fly to jump over multiple encoding/decoding
      *
      * @param $secureKey
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function setSecureKey($secureKey)
     {
         if (!empty($secureKey)) {
             $this->createSecureKey($secureKey);
         } else {
-            throw new \InvalidArgumentException('$secureKey can not be empty');
+            throw new InvalidArgumentException('$secureKey can not be empty');
+        }
+    }
+
+    /**
+     * Possible to change cipher method on fly to jump over multiple encoding/decoding
+     *
+     * @param $method
+     * @throws InvalidArgumentException
+     */
+    public function setMethod($method)
+    {
+        if (!empty($method)) {
+            $ciphers = openssl_get_cipher_methods(true);
+            if (in_array($method, $ciphers)) {
+                $this->method = $method;
+            } else {
+                throw new InvalidArgumentException('Cipher $method was not found in openssl_get_cipher_methods(). Please select another method ask your server administrator to add your required method');
+            }
+        } else {
+            throw new InvalidArgumentException('$method can not be empty');
         }
     }
 
@@ -62,18 +85,17 @@ class Encrypter
      * @param $value
      * @return bool|string
      */
-    public function encode($value)
+    function encode($value)
     {
-        if ($value === '' || !is_scalar($value)) {
-            return false;
-        }
+        $ivSize = openssl_cipher_iv_length($this->method);
+        $iv = openssl_random_pseudo_bytes($ivSize);
 
-        $text = $value;
-        $ivSize = mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_ECB);
-        $iv = mcrypt_create_iv($ivSize, MCRYPT_RAND);
-        $cryptText = mcrypt_encrypt(MCRYPT_RIJNDAEL_256, $this->secureKey, $text, MCRYPT_MODE_ECB, $iv);
+        $encrypted = openssl_encrypt($value, $this->method, $this->secureKey, OPENSSL_RAW_DATA, $iv);
 
-        return trim($this->safeBase64Encode($cryptText));
+        // For storage/transmission, we simply concatenate the IV and cipher text
+        $encrypted = $this->safeBase64Encode($iv . $encrypted);
+
+        return $encrypted;
     }
 
     /**
@@ -82,20 +104,15 @@ class Encrypter
      * @param $value
      * @return bool|string
      */
-    public function decode($value)
+    function decode($value)
     {
-        if ($value === '' || !is_scalar($value)) {
-            return false;
-        }
+        $value = $this->safeBase64Decode($value);
+        $ivSize = openssl_cipher_iv_length($this->method);
+        $iv = substr($value, 0, $ivSize);
+        $value = openssl_decrypt(substr($value, $ivSize), $this->method, $this->secureKey, OPENSSL_RAW_DATA, $iv);
 
-        $cryptText = $this->safeBase64Decode($value);
-        $ivSize = mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_ECB);
-        $iv = mcrypt_create_iv($ivSize, MCRYPT_RAND);
-        $decryptText = mcrypt_decrypt(MCRYPT_RIJNDAEL_256, $this->secureKey, $cryptText, MCRYPT_MODE_ECB, $iv);
-
-        return trim($decryptText);
+        return $value;
     }
-
 
     /**
      * safeBase64Encode
